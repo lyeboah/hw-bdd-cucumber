@@ -12,7 +12,10 @@ end
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  assert page.body =~ /#{e1}.+#{e2}/m
+  #page.body =~ /#{e1}.+#{e2}/m
+  is_match = /#{e1}.*#{e2}/m =~ page.body
+  expect(is_match).not_to eql(nil)
+  #assert !is_match.nil?
   #  ensure that that e1 occurs before e2.
   #  page.body is the entire content of the page as a string.
 end
@@ -32,8 +35,9 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
 end
 
+
 Then /I should see all the movies/ do
-  rows = page.all('#movies tr').size -1
-  assert rows == Movie.count()
+  rows = page.all('#movies tr').size - 1
+  expect(rows).to eq Movie.count()
   # Make sure that all the movies in the app are visible in the table
 end
